@@ -1,0 +1,9 @@
+"0","mapdata <- get_data_from_map(download_map_data(""https://code.highcharts.com/mapdata/countries/no/no-all.js""))"
+"2","trying URL 'https://code.highcharts.com/mapdata/countries/no/no-all.js'
+"
+"2","Content type 'application/x-javascript'"
+"2"," length 63301 bytes (61 KB)
+"
+"2","downloaded 61 KB
+
+"

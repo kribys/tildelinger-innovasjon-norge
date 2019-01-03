@@ -1,0 +1,4 @@
+"0","antall_tilsagn <- nrow(tilsagn)"
+"0","valueBox(antall_tilsagn,"
+"0","         caption = ""Totalt antall tilsagn"","
+"0","         icon = ""fa-bike"")"

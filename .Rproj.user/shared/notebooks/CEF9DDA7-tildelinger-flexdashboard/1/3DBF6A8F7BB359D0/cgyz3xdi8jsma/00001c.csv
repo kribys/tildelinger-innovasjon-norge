@@ -1,0 +1,8 @@
+"0","tildelt_fylke_gg <- tilsagn %>%"
+"0","  group_by(Fylkesnavn) %>%"
+"0","  ggplot(aes('Innvilget.beløp')) +"
+"0","  geom_bar()"
+"0","ggplotly(tildelt_fylke_gg)"
+"2","We recommend that you use the dev version of ggplot2 with `ggplotly()`
+Install it with: `devtools::install_github('hadley/ggplot2')`
+"
