@@ -1,8 +1,0 @@
-"0","tildelt_fylker_gg <- tilsagn %>%"
-"0","  ggplot(aes(x = Fylkesnavn, 'Tildelt.beløp')) +"
-"0","  geom_bar(stat = 'identity') +"
-"0","  theme_bw()"
-"0","ggplotly(tildelt_fylker_gg)"
-"2","We recommend that you use the dev version of ggplot2 with `ggplotly()`
-Install it with: `devtools::install_github('hadley/ggplot2')`
-"

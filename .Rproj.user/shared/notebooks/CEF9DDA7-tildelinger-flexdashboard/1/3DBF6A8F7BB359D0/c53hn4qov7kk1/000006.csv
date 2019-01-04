@@ -1,4 +1,0 @@
-"0","tilsagn %>%"
-"0","    count(`Næringshovedområde`) %>%"
-"0","    arrange(n) %>%"
-"0","    hchart(type = ""treemap"", hcaes(x = `Næringshovedområde`, value = n, color = n))"

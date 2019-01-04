@@ -1,0 +1,6 @@
+"0","if (!require(""pacman"")) install.packages(""pacman"")"
+"2","Loading required package: pacman
+"
+"2","package ‘pacman’ was built under R version 3.5.2"
+"0","pacman::p_load(flexdashboard, httr, highcharter, shiny,"
+"0","               tidyverse, plotly, leaflet, scales)"
