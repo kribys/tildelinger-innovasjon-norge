@@ -8,12 +8,6 @@ output:
   runtime: shiny
   
 ---
-
-
-## Tildelinger Innovasjon Norge
-
-
-
 ```{r install and load packages, cache=TRUE, include=FALSE}
 if (!require("pacman")) install.packages("pacman")
 pacman::p_load(flexdashboard, httr, highcharter, shiny,
@@ -46,9 +40,14 @@ Column {.sidebar}
 --------------------------------------
 Litt tekst som forklarer hva som skjer om man endrer verdiene.
 
-```{r}
+```{r select input}
 selectInput("Næringshovedområde", label = "Velg næring:",
-            choices = c("Vindyrking", "Strutseoppdrett"))
+            choices = c("Vindyrking", "Strutseoppdrett"), multiple = TRUE)
+selectInput("Fylke", label = "Velg fylke:",
+            choices = c("Oslo", "Akershus"), multiple = TRUE)
+selectInput("År", label = "Velg år",
+            choices = c("2010", "2011", "2012", "2013", "2014", "2015", "2016", "2017", "2018"), multiple = TRUE)
+selectInput("Virkemiddelgruppe", label = "Velg Virkemiddelgruppe:", choices = c("Fylkesvise BU-midler", "Landsdekkende programmer"), multiple = TRUE)
 ```
 
 
@@ -65,7 +64,7 @@ tilsagn %>%
 
 ```
 
-### Et annet plot
+### Barchart
 
 ```{r echo=FALSE}
 tilsagn %>%
@@ -75,6 +74,18 @@ tilsagn %>%
 
 ```
 
+### Linechart
+
+```{r}
+virkemiddel_tildelt <- tilsagn %>%
+  select("Virkemiddelgruppe", "Innvilget.beløp", "Innvilget.dato")
+hchart(virkemiddel_tildelt, "line",
+       hcaes(x = "Innvilget.dato", 
+             y = "Innvilget.beløp",
+             group = "Virkemiddelgruppe")
+       )
+  
+```
 
 Column
 ---------------------------------------
@@ -105,19 +116,15 @@ hcmap("https://code.highcharts.com/mapdata/countries/no/no-all.js") %>%
 ```
 
 
-Side 3 {data-navmenu=Plotly}
+Side 3 {data-navmenu=Test}
 ========================================
 
 ```{r}
-tildelt_fylker_gg <- tilsagn %>%
-  ggplot(aes(x = Fylkesnavn, 'Tildelt.beløp')) +
-  geom_bar(stat = 'identity') +
-  theme_bw()
-ggplotly(tildelt_fylker_gg)
+
 ```
 
 
-Side 4 {data-navmenu=Plotly}
+Side 4 {data-navmenu=Test}
 ========================================
 
 Leaflet
