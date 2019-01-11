@@ -1,0 +1,7 @@
+renderPlot({
+  tilsagn_treemap <- tilsagn %>%
+    count(`Næringshovedområde`) %>%
+    arrange(n) %>%
+    hchart(type = "treemap", hcaes(x = `Næringshovedområde`, value = n, color = n))
+  tilsagn_treemap
+})

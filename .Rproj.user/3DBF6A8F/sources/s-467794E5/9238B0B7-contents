@@ -6,6 +6,7 @@ output:
   flexdashboard::flex_dashboard:
   orientation: columns
   runtime: shiny
+  logo: IN_CMYK.png # check height of logo. 48 px max?
   
 ---
 ```{r install and load packages, cache=TRUE, include=FALSE}
@@ -16,14 +17,21 @@ pacman::p_load(flexdashboard, httr, highcharter, shiny,
 ```
 
 
-```{r load data, cache=TRUE, include=FALSE}
+```{r global, cache=TRUE, include=FALSE}
+# load data in a "global" chunk so it can be shared by all users of the dashboard
 tilsagn_url <- "https://data.innovasjonnorge.no/api/files?filename=Tildelinger.csv&container=innovasjonnorge&subfolder=tildelinger/csv"
 eos_url <- "https://data.innovasjonnorge.no/api/files?filename=TildelingerEOS.csv&container=innovasjonnorge&subfolder=tildelinger/csv"
 rentestotte_url <- "https://data.innovasjonnorge.no/api/files?filename=TildelingerRS.csv&container=innovasjonnorge&subfolder=tildelinger/csv"
 
-tilsagn <- read.csv(tilsagn_url, sep = ";", stringsAsFactors = FALSE)
+Tildelinger <- read.csv("Tildelinger.csv",
+                          sep = ";",
+                          stringsAsFactors = FALSE)
+tilsagn <- Tildelinger
+#tilsagn <- read.csv(tilsagn_url, sep = ";", stringsAsFactors = FALSE)
 eos <- read.csv(eos_url, sep = ";", stringsAsFactors = FALSE)
 rentestotte <- read.csv(rentestotte_url, sep = ";", stringsAsFactors = FALSE)
+
+
 
 tilsagn$"Innvilget.beløp" <- as.numeric(tilsagn$"Innvilget.beløp")
 tilsagn$Innvilget.dato <- lubridate::dmy(tilsagn$Innvilget.dato)
@@ -47,7 +55,10 @@ Litt tekst som forklarer hva som skjer om man endrer verdiene.
 ```{r select input}
 
 selectInput("Næringshovedområde", label = "Velg næring:",
-            choices = c("Vindyrking", "Strutseoppdrett"), multiple = TRUE)
+            choices = c("X - Uspesifisert",
+                        "A1 - Jordbruk/Skogbruk",
+                        "S - Annen tjenesteyting"),
+            multiple = TRUE)
 
 selectInput("Fylke", label = "Velg fylke:",
             choices = c("Oslo", "Akershus"), multiple = TRUE)
@@ -73,10 +84,12 @@ Column {.tabset}
 ### Treemap
 
 ```{r treemap næringshovedområde, echo=FALSE}
+renderPlot({
 tilsagn %>%
     count(`Næringshovedområde`) %>%
     arrange(n) %>%
-    hchart(type = "treemap", hcaes(x = `Næringshovedområde`, value = n, color = n))
+    hchart(type = "treemap", hcaes(x = input$"Næringshovedområde", value = n, color = n))
+})
 
 ```
 

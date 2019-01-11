@@ -1,0 +1,30 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1547214488018.000,
+    "dirty" : false,
+    "encoding" : "",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "974DB957",
+    "lastKnownWriteTime" : 32370120545140837,
+    "last_content_update" : 1547214488018,
+    "path" : null,
+    "project_path" : null,
+    "properties" : {
+        "cacheKey" : "CAEA4C2B",
+        "caption" : "tilsagn",
+        "contentUrl" : "grid_resource/gridviewer.html?env=&obj=tilsagn&cache_key=CAEA4C2B",
+        "displayedObservations" : 49466,
+        "environment" : "",
+        "object" : "tilsagn",
+        "preview" : 0,
+        "source_window_id" : "wee4lmwm6osct",
+        "totalObservations" : 49466,
+        "variables" : 10
+    },
+    "relative_order" : 5,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_dataframe"
+}

@@ -1,0 +1,29 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1547207730317.000,
+    "dirty" : false,
+    "encoding" : "",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "EE424C4B",
+    "lastKnownWriteTime" : 3419473789575321445,
+    "last_content_update" : 1547207730317,
+    "path" : null,
+    "project_path" : null,
+    "properties" : {
+        "cacheKey" : "885B5127",
+        "caption" : "Tildelinger",
+        "contentUrl" : "grid_resource/gridviewer.html?env=&obj=Tildelinger&cache_key=885B5127",
+        "displayedObservations" : "49466",
+        "environment" : "",
+        "object" : "Tildelinger",
+        "preview" : "0",
+        "totalObservations" : "49466",
+        "variables" : "10"
+    },
+    "relative_order" : 4,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_dataframe"
+}
