@@ -1,0 +1,2 @@
+"0","selectInput(""Fylke"", label = ""Velg fylke:"","
+"0","            choices = c(""Oslo"", ""Akershus""), multiple = TRUE)"

@@ -18,3 +18,8 @@ magrittr
 leaflet
 scales
 pacman
+d3heatmap
+pairsD3
+rpivotTable
+manipulateWidget
+DT

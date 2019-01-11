@@ -1,0 +1,1 @@
+"0","selectInput(""Virkemiddelgruppe"", label = ""Velg Virkemiddelgruppe:"", choices = c(""Fylkesvise BU-midler"", ""Landsdekkende programmer""), multiple = TRUE)"

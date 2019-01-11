@@ -1,0 +1,2 @@
+"0","selectInput(""Næringshovedområde"", label = ""Velg næring:"","
+"0","            choices = c(""Vindyrking"", ""Strutseoppdrett""), multiple = TRUE)"
