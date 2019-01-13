@@ -1,0 +1,193 @@
+---
+title: "Tildelinger Innovasjon Norge"
+author: "Kristian Bysheim"
+date: "2 januar 2019"
+output: 
+  flexdashboard::flex_dashboard:
+  orientation: columns
+  runtime: shiny
+  logo: IN_CMYK.png # check height of logo. 48 px max?
+  
+---
+```{r install and load packages, cache=TRUE, include=FALSE}
+if (!require("pacman")) install.packages("pacman")
+pacman::p_load(flexdashboard, httr, highcharter, shiny,
+               tidyverse, plotly, leaflet, scales, d3heatmap,
+               pairsD3, rpivotTable, manipulateWidget, DT,
+               gganimate, patchwork, ggmap, ggrepel, ggally,
+               ggiraph)
+```
+
+
+```{r global, cache=TRUE, include=FALSE}
+# load data in a "global" chunk so it can be shared by all users of the dashboard
+tilsagn_url <- "https://data.innovasjonnorge.no/api/files?filename=Tildelinger.csv&container=innovasjonnorge&subfolder=tildelinger/csv"
+eos_url <- "https://data.innovasjonnorge.no/api/files?filename=TildelingerEOS.csv&container=innovasjonnorge&subfolder=tildelinger/csv"
+rentestotte_url <- "https://data.innovasjonnorge.no/api/files?filename=TildelingerRS.csv&container=innovasjonnorge&subfolder=tildelinger/csv"
+
+Tildelinger <- read.csv("Tildelinger.csv",
+                          sep = ";",
+                          stringsAsFactors = FALSE)
+tilsagn <- Tildelinger
+#tilsagn <- read.csv(tilsagn_url, sep = ";", stringsAsFactors = FALSE)
+eos <- read.csv(eos_url, sep = ";", stringsAsFactors = FALSE)
+rentestotte <- read.csv(rentestotte_url, sep = ";", stringsAsFactors = FALSE)
+
+
+
+tilsagn$"Innvilget.beløp" <- as.numeric(tilsagn$"Innvilget.beløp")
+tilsagn$Innvilget.dato <- lubridate::dmy(tilsagn$Innvilget.dato)
+
+tilsagn %>%
+    count(`Næringshovedområde`) %>%
+    arrange(n) %>%
+    hchart(type = "treemap", hcaes(x = `Næringshovedområde`, value = n, color = n))
+
+mapdata <- get_data_from_map(download_map_data("https://code.highcharts.com/mapdata/countries/no/no-all.js"))
+
+```
+
+Tildelinger 
+======================================
+
+Column {.sidebar}
+--------------------------------------
+Litt tekst som forklarer hva som skjer om man endrer verdiene.
+
+```{r select input}
+
+selectInput("Næringshovedområde", label = "Velg næring:",
+            choices = c("X - Uspesifisert",
+                        "A1 - Jordbruk/Skogbruk",
+                        "S - Annen tjenesteyting"),
+            multiple = TRUE)
+
+selectInput("Fylke", label = "Velg fylke:",
+            choices = c("Oslo", "Akershus"), multiple = TRUE)
+
+dateRangeInput("Innvilget.dato",
+               label = "Velg dato:", 
+               start = min("Innvilget.dato"),
+               end = max("Innvilget.dato"),
+               separator = " - ", 
+               format = "yyyy-mm-dd",
+               startview = "year",
+               weekstart = 1)
+
+selectInput("Virkemiddelgruppe", label = "Velg Virkemiddelgruppe:", choices = c("Fylkesvise BU-midler", "Landsdekkende programmer"), multiple = TRUE)
+```
+
+lage parametre som påvirker data i flere grafer samtidig med manipulateWidget()
+https://github.com/rte-antares-rpackage/manipulateWidget
+
+Column {.tabset}
+--------------------------------------
+
+### Treemap
+
+```{r treemap næringshovedområde, echo=FALSE}
+renderPlot({
+tilsagn %>%
+    count(`Næringshovedområde`) %>%
+    arrange(n) %>%
+    hchart(type = "treemap", hcaes(x = input$"Næringshovedområde", value = n, color = n))
+})
+
+```
+
+### Barchart
+
+```{r echo=FALSE}
+tilsagn %>%
+    count(`Næringshovedområde`) %>%
+    arrange(n) %>%
+    hchart(type = "bar", hcaes(x = `Næringshovedområde`, y = n))
+
+```
+
+### Linechart
+
+```{r}
+virkemiddel_tildelt <- tilsagn %>%
+  select("Virkemiddelgruppe",
+         "Innvilget.beløp",
+         "Innvilget.dato")
+hchart(virkemiddel_tildelt, "bar",
+       hcaes(y = "Innvilget.dato", 
+             x = "Innvilget.beløp")
+             # group = "Virkemiddelgruppe")
+       )
+  
+```
+
+### PairsD3
+```{r}
+
+```
+
+
+Column
+---------------------------------------
+
+
+```{r}
+antall_tilsagn <- nrow(tilsagn)
+valueBox(antall_tilsagn,
+         caption = "Totalt antall tilsagn")
+```
+
+
+
+```{r, echo=FALSE}
+hcmap("https://code.highcharts.com/mapdata/countries/no/no-all.js",
+      data = eos, value = "Innvilget.beløp",
+      joinBy = c("name", "Fylkesnavn"), name = "Tildelt", # @todo: lage variabel i tilsagn som tilsvarer hc-a2
+      dataLabels = list(enabled = TRUE, format = "{point.name}"),
+      borderColor = "#FAFAFA", borderwidth = 0.1,
+      tooltip = list(valueDecimals = 0))
+```
+
+EØS-midler {data-navmenu=Annet}
+========================================
+
+```{r}
+
+```
+
+
+Rentestøtte {data-navmenu=Annet}
+========================================
+
+Pivot-tabell {data-navmenu=Annet}
+========================================
+basert på https://github.com/smartinsightsfromdata/rpivotTable
+
+
+
+```{r DataTables}
+datatable(tilsagn, filter = "top")
+```
+Datasettet er litt stort til å håndtere i nettleser. Se https://rstudio.github.io/DT/server.html for tips til bruk av server.
+
+Om data
+========================================
+Se hvilke bedrifter vi har gitt tilsagn om finansiering i form av lån og tilskudd.
+
+Vi skal skape fremtidens arbeidsplasser. Dette gjør vi gjennom å gi finansiering og rådgivning til bedrifter. Vi bidrar også til å innovasjon i landbruket, vi sørger for næringsutvikling i distriktene og vi markedsfører Norge overfor både turister og investorer. Om Innovasjon Norges virksomhet.
+
+Under ser du en tabell over hvilke bedrifter vi har gitt tilsagn om finansiering, og hva slags type finansiering dette er. Kunder du finner i denne listen, kan ha takket nei til tilsagnet eller på annen måte redusert tilsagnsbeløpet. Oversikten viser ikke bedrifter som har fått rådgivning eller deltatt på noen av våre kurs og programmer.
+Du kan snevre inn søket på virkemiddel, år og fylke, eller søke på bedrift under "Navn". 
+Forklaring på de ulike rapportene
+Det finnes tre rapporter. Disse blar du til ved å trykke på pilene "<" og ">" nederst på siden. 
+
+Tildelinger: 
+Alle tilsagn uten EØS-oppdrag og rentestøtte. 
+Vi har visualisert næringshovedområdene og lagt inn en kort forklarende tekst. Denne stemmer ikke overens med summen av det som ligger i tabellen. I visualiseringen har vi utelukket alle tilsagn der vi ikke har næringskoden på kunden (for eksempel personkunder).
+Last ned tildelinger i csv-format 
+
+EØS
+Kun tilsagn som er koblet til EØS-oppdrag og som er bevilget i euro.
+Last ned tildelinger EØS i csv-format
+
+Rentestøtte
+Kun tilsagn som er koblet til rentestøtte. Finnes kun til og med 2015 ettersom støtteordningen ble avviklet i 2016.

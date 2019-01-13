@@ -1,0 +1,22 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1547405487610.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "2255290318",
+    "id" : "BCC4D498",
+    "lastKnownWriteTime" : 1547405842,
+    "last_content_update" : 1547405842945,
+    "path" : "~/Documents/GitHub/tildelinger-innovasjon-norge/tildelinger-flexdashboard.Rmd",
+    "project_path" : "tildelinger-flexdashboard.Rmd",
+    "properties" : {
+        "cursorPosition" : "17,22",
+        "scrollLine" : "10"
+    },
+    "relative_order" : 1,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_markdown"
+}
